@@ -1,0 +1,15 @@
+assemble:
+  - from: dist
+    into: static
+liferay-admin-dashboard:
+  clientExtensionType:
+    customElement:
+      cssURLs:
+        - css/*.css
+      jsURLs:
+        - js/*.js
+      htmlElementName: div
+      htmlAttributes:
+        id: liferay-admin-dashboard
+  name: Liferay Admin Dashboard
+  type: customElement

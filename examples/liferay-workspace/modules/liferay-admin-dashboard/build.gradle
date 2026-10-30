@@ -1,0 +1,28 @@
+// =============================================================================
+// Liferay Workspace Module: build.gradle
+// =============================================================================
+// Place this file in: modules/liferay-admin-dashboard/build.gradle
+// =============================================================================
+
+plugins {
+    id 'com.liferay.node' version '7.4.3.1'
+}
+
+node {
+    nodeVersion = '18.17.0'
+}
+
+task buildClientExtension(type: Exec) {
+    workingDir '.'
+    commandLine 'npm', 'run', 'build'
+}
+
+task copyBuildOutput(type: Copy) {
+    dependsOn buildClientExtension
+    from 'dist'
+    into 'src/main/resources/META-INF/resources'
+}
+
+processResources {
+    dependsOn copyBuildOutput
+}
