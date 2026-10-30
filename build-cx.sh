@@ -1,10 +1,4 @@
 #!/bin/bash
-
-# ============================================================
-# Liferay Client Extension Build Script
-# Builds and packages the Admin Dashboard for Liferay DXP
-# ============================================================
-
 set -e
 
 echo "🔨 Building Liferay Admin Dashboard Client Extension..."
@@ -18,7 +12,7 @@ npm install
 echo "🏗️  Building project..."
 npm run build
 
-# Step 3: Create the package directory
+# Step 3: Create the package directory structure
 PACKAGE_DIR="liferay-admin-dashboard-package"
 rm -rf "$PACKAGE_DIR"
 mkdir -p "$PACKAGE_DIR/static"
@@ -27,7 +21,7 @@ mkdir -p "$PACKAGE_DIR/static"
 echo "📋 Copying client-extension.yaml..."
 cp client-extension.yaml "$PACKAGE_DIR/"
 
-# Step 5: Copy build output
+# Step 5: Copy build output to static folder
 echo "📂 Copying build artifacts..."
 cp -r dist/* "$PACKAGE_DIR/static/"
 
@@ -46,13 +40,24 @@ echo "✅ Build complete!"
 echo ""
 echo "📦 Package: liferay-admin-dashboard.zip"
 echo ""
-echo "🚀 Deployment options:"
+echo "📁 Package structure:"
+echo "   liferay-admin-dashboard.zip"
+echo "   ├── client-extension.yaml"
+echo "   └── static/"
+echo "       ├── index.html"
+echo "       └── assets/"
+echo "           ├── index-*.js"
+echo "           └── index-*.css"
+echo ""
+echo "🚀 Deployment:"
 echo "   1. Copy to Liferay deploy folder:"
 echo "      cp liferay-admin-dashboard.zip \$LIFERAY_HOME/deploy/"
 echo ""
-echo "   2. Upload via Control Panel:"
+echo "   2. Or upload via Control Panel:"
 echo "      Control Panel → Client Extensions → Add → Upload"
 echo ""
-echo "   3. Import into Liferay Workspace:"
-echo "      Copy contents to your workspace module"
+echo "⚠️  Note: If you encounter Jericho parser errors, ensure:"
+echo "   - htmlElementName in client-extension.yaml is a custom element name"
+echo "   - CSS/JS URLs match the actual build output paths"
+echo "   - The static folder structure is correct"
 echo "=================================================="

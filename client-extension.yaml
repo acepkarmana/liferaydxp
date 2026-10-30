@@ -2,14 +2,12 @@ assemble:
   - from: dist
     into: static
 liferay-admin-dashboard:
+  name: Liferay Admin Dashboard
   clientExtensionType:
     customElement:
       cssURLs:
-        - css/*.css
+        - static/assets/*.css
       jsURLs:
-        - js/*.js
-      htmlElementName: div
-      htmlAttributes:
-        id: liferay-admin-dashboard
-  name: Liferay Admin Dashboard
+        - static/assets/*.js
+      htmlElementName: liferay-admin-dashboard
   type: customElement
