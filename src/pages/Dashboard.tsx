@@ -10,19 +10,35 @@ import {
   AlertTriangle,
   CheckCircle2,
   ArrowRight,
+  Download,
 } from 'lucide-react';
+import { downloadProjectSource } from '../services/downloadService';
+import toast from 'react-hot-toast';
+import { useState } from 'react';
 
 interface DashboardProps {
   onNavigate: (page: PageType) => void;
 }
 
 export default function Dashboard({ onNavigate }: DashboardProps) {
+  const [downloading, setDownloading] = useState(false);
   const totalRoles = mockRoles.length;
   const totalUsers = mockUsers.length;
   const activeUsers = mockUsers.filter(u => u.active).length;
   const totalTasks = mockHousekeepingTasks.length;
   const systemRoles = mockRoles.filter(r => r.type === 'System').length;
   const customRoles = mockRoles.filter(r => r.type !== 'System').length;
+
+  const handleDownload = async () => {
+    setDownloading(true);
+    try {
+      await downloadProjectSource();
+      toast.success('Source code downloaded! Check your downloads folder.');
+    } catch (error) {
+      toast.error('Download failed. Please try again.');
+    }
+    setDownloading(false);
+  };
 
   const stats = [
     { label: 'Total Roles', value: totalRoles, icon: <Shield size={24} />, color: 'bg-blue-500', lightColor: 'bg-blue-50 text-blue-700', page: 'roles' as PageType },
@@ -40,6 +56,14 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
           <p className="text-sm text-gray-500 mt-1">Liferay DXP 2026.Q1 Administration Console</p>
         </div>
         <div className="flex items-center gap-2">
+          <button
+            onClick={handleDownload}
+            disabled={downloading}
+            className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 transition-colors disabled:opacity-50 shadow-md"
+          >
+            <Download size={16} className={downloading ? 'animate-bounce' : ''} />
+            {downloading ? 'Downloading...' : 'Download Source'}
+          </button>
           <span className="px-3 py-1 bg-blue-100 text-blue-700 text-xs font-medium rounded-full">
             Client Extension
           </span>

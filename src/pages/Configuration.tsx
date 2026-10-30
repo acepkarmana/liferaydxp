@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { LiferayConfig } from '../types';
-import { Save, TestTube, Globe, Key, Building, Hash, CheckCircle2, AlertCircle, Info, Copy } from 'lucide-react';
+import { Save, TestTube, Globe, Key, Building, Hash, CheckCircle2, AlertCircle, Info, Copy, Download, Loader2 } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { downloadProjectSource, getSourceFileList } from '../services/downloadService';
 
 interface ConfigurationProps {
   config: LiferayConfig;
@@ -12,6 +13,24 @@ export default function Configuration({ config, onConfigChange }: ConfigurationP
   const [localConfig, setLocalConfig] = useState<LiferayConfig>({ ...config });
   const [testResult, setTestResult] = useState<{ success: boolean; message: string } | null>(null);
   const [testing, setTesting] = useState(false);
+  const [downloading, setDownloading] = useState(false);
+  const [fileList, setFileList] = useState<{ path: string; size: number }[]>([]);
+
+  useEffect(() => {
+    setFileList(getSourceFileList());
+  }, []);
+
+  const handleDownload = async () => {
+    setDownloading(true);
+    try {
+      await downloadProjectSource();
+      toast.success('Source code downloaded successfully!');
+    } catch (error) {
+      toast.error('Failed to download source code');
+      console.error(error);
+    }
+    setDownloading(false);
+  };
 
   const handleSave = () => {
     onConfigChange(localConfig);
@@ -280,15 +299,51 @@ liferay-admin-dashboard:
         </pre>
       </div>
 
-      {/* Save Button */}
-      <div className="flex justify-end">
-        <button
-          onClick={handleSave}
-          className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
-        >
-          <Save size={16} />
-          Save Configuration
-        </button>
+      {/* Download & Save Buttons */}
+      <div className="flex flex-col sm:flex-row justify-between items-center gap-4 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-6">
+        <div className="flex-1">
+          <h3 className="text-base font-semibold text-gray-900">📦 Download Source Code</h3>
+          <p className="text-sm text-gray-600 mt-1">
+            Download the complete project as a ZIP file. Includes all source code, configuration files, and deployment scripts.
+          </p>
+        </div>
+        <div className="flex gap-3">
+          <button
+            onClick={handleDownload}
+            disabled={downloading}
+            className="flex items-center gap-2 px-6 py-3 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 transition-colors disabled:opacity-50 shadow-lg shadow-green-200"
+          >
+            {downloading ? (
+              <Loader2 size={16} className="animate-spin" />
+            ) : (
+              <Download size={16} />
+            )}
+            {downloading ? 'Preparing...' : 'Download ZIP'}
+          </button>
+          <button
+            onClick={handleSave}
+            className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
+          >
+            <Save size={16} />
+            Save Config
+          </button>
+        </div>
+      </div>
+
+      {/* File List */}
+      <div className="bg-white rounded-xl border border-gray-200 p-6">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">📁 Files Included in Download</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          {fileList.map((file, idx) => (
+            <div key={idx} className="flex items-center justify-between p-2 bg-gray-50 rounded text-xs">
+              <span className="font-mono text-gray-700 truncate">{file.path}</span>
+              <span className="text-gray-400 ml-2 whitespace-nowrap">{(file.size / 1024).toFixed(1)} KB</span>
+            </div>
+          ))}
+        </div>
+        <p className="text-xs text-gray-500 mt-3">
+          Total: {fileList.length} files • {(fileList.reduce((acc, f) => acc + f.size, 0) / 1024).toFixed(1)} KB uncompressed
+        </p>
       </div>
     </div>
   );

@@ -95,6 +95,21 @@ export default function Sidebar({ currentPage, onNavigate, isOpen, onToggle }: S
       {/* Footer */}
       {isOpen && (
         <div className="p-4 border-t border-slate-700">
+          <button
+            onClick={() => {
+              import('../services/downloadService').then(({ downloadProjectSource }) => {
+                downloadProjectSource();
+              });
+            }}
+            className="w-full flex items-center gap-2 px-3 py-2 bg-green-600/20 text-green-400 rounded-lg text-xs font-medium hover:bg-green-600/30 transition-colors mb-2"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            Download Source Code
+          </button>
           <div className="text-[10px] text-slate-500">
             <p>Client Extension v1.0.0</p>
             <p>Liferay DXP 2026.Q1</p>
