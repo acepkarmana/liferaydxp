@@ -8,6 +8,7 @@ import {
   Settings,
   ChevronLeft,
   ChevronRight,
+  FileCode,
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -24,6 +25,7 @@ const navItems: { id: PageType; label: string; icon: React.ReactNode; section?: 
   { id: 'permissions', label: 'Role Permissions', icon: <Key size={20} /> },
   { id: 'housekeeping', label: 'Housekeeping', icon: <Wrench size={20} />, section: 'Maintenance' },
   { id: 'configuration', label: 'Configuration', icon: <Settings size={20} />, section: 'Settings' },
+  { id: 'source', label: 'Source Code', icon: <FileCode size={20} /> },
 ];
 
 export default function Sidebar({ currentPage, onNavigate, isOpen, onToggle }: SidebarProps) {

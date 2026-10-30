@@ -9,6 +9,7 @@ import RoleMembership from './pages/RoleMembership';
 import RolePermission from './pages/RolePermission';
 import Housekeeping from './pages/Housekeeping';
 import Configuration from './pages/Configuration';
+import SourceCode from './pages/SourceCode';
 import { Toaster } from 'react-hot-toast';
 
 function App() {
@@ -30,6 +31,8 @@ function App() {
         return <Housekeeping config={config} />;
       case 'configuration':
         return <Configuration config={config} onConfigChange={setConfig} />;
+      case 'source':
+        return <SourceCode />;
       default:
         return <Dashboard onNavigate={setCurrentPage} />;
     }

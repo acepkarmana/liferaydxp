@@ -1,7 +1,6 @@
 /**
- * Source code bundle for the Liferay Admin Dashboard project.
- * This file contains all source files as embedded strings so they can be
- * packaged into a ZIP file for download directly from the browser.
+ * Complete Source Code Bundle for Liferay Admin Dashboard
+ * Contains ALL source files generated in this session
  */
 
 export interface SourceFile {
@@ -10,41 +9,39 @@ export interface SourceFile {
 }
 
 export const sourceFiles: SourceFile[] = [
-  // =========================================================================
-  // Root Configuration Files
-  // =========================================================================
+  // Configuration Files
   {
     path: 'package.json',
-    content: JSON.stringify({
-      name: "liferay-admin-dashboard",
-      private: true,
-      version: "1.0.0",
-      type: "module",
-      scripts: {
-        dev: "vite",
-        build: "vite build",
-        preview: "vite preview",
-        typecheck: "tsc --noEmit"
-      },
-      dependencies: {
-        "lucide-react": "^0.294.0",
-        "react": "^18.2.0",
-        "react-dom": "^18.2.0",
-        "react-hot-toast": "^2.4.1",
-        "jszip": "^3.10.1",
-        "file-saver": "^2.0.5"
-      },
-      devDependencies: {
-        "@types/file-saver": "^2.0.7",
-        "@types/react": "^18.2.37",
-        "@types/react-dom": "^18.2.15",
-        "@vitejs/plugin-react": "^4.2.0",
-        "@tailwindcss/vite": "^4.0.0",
-        "tailwindcss": "^4.0.0",
-        "typescript": "^5.2.2",
-        "vite": "^6.0.0"
-      }
-    }, null, 2)
+    content: `{
+  "name": "liferay-admin-dashboard",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "lucide-react": "^0.294.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-hot-toast": "^2.4.1",
+    "jszip": "^3.10.1",
+    "file-saver": "^2.0.5"
+  },
+  "devDependencies": {
+    "@types/file-saver": "^2.0.7",
+    "@types/react": "^18.2.37",
+    "@types/react-dom": "^18.2.15",
+    "@vitejs/plugin-react": "^4.2.0",
+    "@tailwindcss/vite": "^4.0.0",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.2.2",
+    "vite": "^6.0.0"
+  }
+}`
   },
   {
     path: 'tsconfig.json',
@@ -141,11 +138,9 @@ cd "$PACKAGE_DIR"
 zip -r ../liferay-admin-dashboard.zip .
 cd ..
 rm -rf "$PACKAGE_DIR"
-echo "Package created: liferay-admin-dashboard.zip"`
+echo "✅ Package created: liferay-admin-dashboard.zip"`
   },
-  // =========================================================================
   // Source Files
-  // =========================================================================
   {
     path: 'src/main.tsx',
     content: `import React from "react";
@@ -172,6 +167,7 @@ import RoleMembership from './pages/RoleMembership';
 import RolePermission from './pages/RolePermission';
 import Housekeeping from './pages/Housekeeping';
 import Configuration from './pages/Configuration';
+import SourceCode from './pages/SourceCode';
 import { Toaster } from 'react-hot-toast';
 
 function App() {
@@ -193,6 +189,8 @@ function App() {
         return <Housekeeping config={config} />;
       case 'configuration':
         return <Configuration config={config} onConfigChange={setConfig} />;
+      case 'source':
+        return <SourceCode />;
       default:
         return <Dashboard onNavigate={setCurrentPage} />;
     }
@@ -223,115 +221,42 @@ function App() {
 export default App;`
   },
   {
-    path: 'src/types/index.ts',
-    content: `export interface LiferayConfig {
-  baseUrl: string;
-  companyId: number;
-  oAuthToken: string;
-  basicAuth: string;
-  siteId: number;
-}
-
-export interface Role {
-  id: number;
-  name: string;
-  description: string;
-  type: 'Regular' | 'Organization' | 'Site' | 'System';
-  subtype: string;
-  userCount: number;
-  createDate: string;
-  modifiedDate: string;
-}
-
-export interface User {
-  id: number;
-  screenName: string;
-  firstName: string;
-  lastName: string;
-  emailAddress: string;
-  active: boolean;
-  roles: string[];
-}
-
-export interface AssetPermission {
-  id: number;
-  assetName: string;
-  assetType: string;
-  actions: PermissionAction[];
-}
-
-export interface PermissionAction {
-  actionId: string;
-  name: string;
-  supported: boolean;
-}
-
-export interface RolePermission {
-  roleId: number;
-  roleName: string;
-  permissions: AssetPermission[];
-}
-
-export interface HousekeepingTask {
-  id: string;
-  name: string;
-  description: string;
-  category: 'roles' | 'folders' | 'objects' | 'calendar' | 'general';
-  status: 'idle' | 'running' | 'completed' | 'failed';
-  lastRun?: string;
-  itemCount?: number;
-  icon: string;
-}
-
-export interface CleanupResult {
-  taskId: string;
-  success: boolean;
-  itemsProcessed: number;
-  itemsRemoved: number;
-  duration: number;
-  message: string;
-  timestamp: string;
-}
-
-export type PageType = 'dashboard' | 'roles' | 'membership' | 'permissions' | 'housekeeping' | 'configuration';`
-  },
-  // =========================================================================
-  // README
-  // =========================================================================
-  {
     path: 'README.md',
     content: `# Liferay DXP Admin Dashboard - Client Extension
 
 A comprehensive administrator dashboard for maintaining Liferay DXP 2026.Q1 web applications.
 
-## Features
-
-- **Role Management** - CRUD operations for Liferay roles
-- **Role Membership** - User-role assignment management
-- **Role Permissions** - Asset-level permission matrix
-- **Housekeeping** - Cleanup tasks for folders, files, objects, calendar, trash
-- **Configuration** - Adjustable Liferay connection settings
-
-## Quick Start
+## 🚀 Quick Start
 
 \`\`\`bash
 npm install
 npm run dev
 \`\`\`
 
-## Build for Production
+Visit http://localhost:3000
+
+## 📦 Build for Production
 
 \`\`\`bash
 npm run build
 ./build-cx.sh
 \`\`\`
 
-## Deploy to Liferay
+## 🎯 Deploy to Liferay
 
 1. Copy \`liferay-admin-dashboard.zip\` to \`$LIFERAY_HOME/deploy/\`
 2. Or upload via **Control Panel → Client Extensions → Add → Upload**
 
-## Liferay REST API Endpoints
+## ✨ Features
+
+- **Role Management** - CRUD operations for Liferay roles
+- **Role Membership** - User-role assignment management  
+- **Role Permissions** - Asset-level permission matrix
+- **Housekeeping** - Cleanup tasks (folders, files, objects, calendar, trash)
+- **Configuration** - Adjustable Liferay connection settings
+- **Source Code Browser** - View and download all source files
+
+## 🔌 Liferay REST API Endpoints
 
 | Method | Endpoint | Purpose |
 |--------|----------|---------|
@@ -339,11 +264,9 @@ npm run build
 | POST | /o/headless-admin-user/v1.0/roles | Create role |
 | PUT | /o/headless-admin-user/v1.0/roles/{id} | Update role |
 | DELETE | /o/headless-admin-user/v1.0/roles/{id} | Delete role |
-| GET | /o/headless-admin-role/v1.0/roles/{id}/role-permissions | Get permissions |
 
-## License
+## 📝 License
 
-MIT
-`
+MIT`
   },
 ];

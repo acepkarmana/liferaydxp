@@ -67,4 +67,4 @@ export interface CleanupResult {
   timestamp: string;
 }
 
-export type PageType = 'dashboard' | 'roles' | 'membership' | 'permissions' | 'housekeeping' | 'configuration';
+export type PageType = 'dashboard' | 'roles' | 'membership' | 'permissions' | 'housekeeping' | 'configuration' | 'source';
