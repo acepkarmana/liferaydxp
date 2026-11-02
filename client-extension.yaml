@@ -1,6 +1,7 @@
 assemble:
   - from: dist
     into: static
+
 liferay-admin-dashboard:
   name: Liferay Admin Dashboard
   clientExtensionType:
